@@ -1,0 +1,195 @@
+openapi: 3.0.2
+
+info:
+  title: API model
+  description: Modelo API Delilah_Resto 
+  version: 1.0.0
+
+tags:
+  - name: Usuarios
+    description: usuarios
+    
+  - name: Productos
+    description: productos
+  
+  - name: Ordenes
+    description: Ordenes
+
+servers:
+- url: /mysql://root:@localhost:3306/delilah_resto
+
+
+paths:
+  /usuarios:
+    post:
+      tags: 
+        - Usuarios
+      summary: Creacion de nuevos usuarios
+      responses:
+        200:
+          description: OK
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/usuarios"
+        401:
+          description: Error
+          
+  /productos:
+    get: 
+      tags: 
+        - Productos
+      summary: Obtener productos
+      responses:
+        200:
+          description: OK (revisar este<--)
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/productos"
+        401:
+          description: Error
+          
+    post: 
+      tags: 
+        - Productos
+      summary: Crear productos
+      responses:
+        200:
+          description: se agrego un nuevo producto.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/productos"
+        404:
+          description: No esta autorizado.     
+       
+    put: 
+      tags: 
+        - Productos
+      summary: Edita un producto
+      responses:
+        200:
+          description: se actualizo el producto.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/productos"
+        404:
+          description: No esta autorizado. 
+  
+    delete: 
+      tags: 
+        - Productos
+      summary: Elimina un producto
+      responses:
+        200:
+          description: se elimino el producto.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/productos"
+        404:
+          description: No esta autorizado.     
+
+  /ordenes:
+    post: 
+      tags: 
+        - Ordenes
+      summary: Creacion de una nueva orden
+      responses:
+        200:
+          description: se agrego un nueva orden.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ordenes"
+        401:
+          description: Error  
+    
+    put: 
+      tags: 
+        - Ordenes
+      summary: Edita una orden
+      responses:
+        200:
+          description: se actualizo la orden.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ordenes"
+        404:
+          description: No esta autorizado.    
+          
+components:
+  schemas:
+    usuarios:
+      type: object
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+          example: Juan Pablo Franco
+        email:
+          type: string
+          example: juanfranco@gmail.com
+        phone:
+          type: integer
+          example: 099435556
+        address:
+          type: string
+          example: 19 de Abril 1445
+        password:
+          type: integer
+          example: 12345
+        admin: 
+          type: boolean
+          example: true
+          
+    productos:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Hamburguesa
+        prize:
+          type: integer
+          example: 50
+              
+    ordenes:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+          example: 1
+        time:
+          type: string
+          format: date-time
+          example: 10
+        status:
+          type: string
+          example: 
+          - nuevo
+          - confirmado
+          - preparando
+          - enviando
+          - entregado
