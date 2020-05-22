@@ -1,0 +1,360 @@
+openapi: 3.0.2
+
+info:
+  title: API model
+  description: Modelo API Delilah_Resto 
+  version: 1.0.0
+
+tags:
+  - name: Usuarios
+    description: usuarios
+    
+  - name: Productos
+    description: productos
+  
+  - name: Ordenes
+    description: Ordenes
+
+servers:
+- url: http://127.0.0.1:3000
+
+paths:
+
+  '/usuarios/login':
+    post:
+      tags: 
+        - Usuarios
+      summary: Ingreso de usuario
+      requestBody:
+        required: True
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/usuarios3"
+      responses:
+        200:
+          description: OK
+          content: 
+            application/json:
+              example: {
+                "token":"String"
+              }
+        401:
+          description: Error
+
+  /usuarios:
+    post:
+      tags: 
+        - Usuarios
+      summary: Creacion de nuevos usuarios
+      requestBody:
+        required: True
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/usuarios2"
+      responses:
+        200:
+          description: OK
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/usuarios"
+        401:
+          description: Error
+          
+  /productos:
+    get: 
+      tags: 
+        - Productos
+      summary: Obtener productos
+      security: 
+        - autenticacion: []
+      responses:
+        200:
+          description: OK
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/productos"
+        401:
+          description: Error
+          
+    post: 
+      tags: 
+        - Productos
+      summary: Crear productos
+      security: 
+        - autenticacion: []
+      requestBody:
+        required: True
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/productos2"
+      responses:
+        200:
+          description: se agrego un nuevo producto.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/productos"
+        404:
+          description: No esta autorizado.     
+  
+  '/productos/{idProducto}':     
+    put: 
+      tags: 
+        - Productos
+      summary: Edita un producto
+      parameters: 
+        - name: idProducto
+          in: path 
+          description: Id del producto a modificar
+          required: True
+          schema:
+            type: integer
+      security: 
+        - autenticacion: []
+      requestBody:
+        required: True
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/productos2"
+      responses:
+        200:
+          description: se actualizo el producto.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/productos"
+        404:
+          description: No esta autorizado. 
+  
+    delete: 
+      tags: 
+        - Productos
+      summary: Elimina un producto
+      parameters: 
+        - name: idProducto
+          in: path 
+          description: Id del producto a eliminar
+          required: True
+          schema:
+            type: integer
+      security: 
+        - autenticacion: []
+      responses:
+        200:
+          description: se elimino el producto.
+        404:
+          description: No esta autorizado.     
+
+  /ordenes:
+    post: 
+      tags: 
+        - Ordenes
+      summary: Creacion de una nueva orden
+      security: 
+        - autenticacion: []
+      requestBody:
+        required: True
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ordenes2"  
+      responses:
+        200:
+          description: se agrego un nueva orden.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ordenes"
+        401:
+          description: Error  
+          
+  '/ordenes/{idOrdenes}':   
+    put: 
+      tags: 
+        - Ordenes
+      summary: Edita una orden
+      parameters: 
+        - name: idOrdenes
+          in: path 
+          description: Id de la orden a modificar
+          required: True
+          schema:
+            type: integer
+      security: 
+        - autenticacion: []
+      requestBody:
+        required: True
+        content: 
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ordenes2"  
+      responses:
+        200:
+          description: se actualizo la orden.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ordenes"
+        404:
+          description: No esta autorizado.    
+          
+components:
+  schemas:
+    usuarios:
+      type: object
+      properties:
+        id:
+          type: integer
+        user:
+          type: string
+          example: juanfranco
+        full_name:
+          type: string
+          example: Juan Pablo Franco
+        email:
+          type: string
+          example: juanfranco@gmail.com
+        phone:
+          type: integer
+          example: 099435556
+        address:
+          type: string
+          example: 19 de Abril 1445
+        password:
+          type: integer
+          example: 12345
+        admin: 
+          type: boolean
+          example: true
+        
+    usuarios2:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Juan Pablo Franco
+        user:
+          type: string
+          example: juanfranco
+        email:
+          type: string
+          example: juanfranco@gmail.com
+        phone:
+          type: integer
+          example: 099435556
+        address:
+          type: string
+          example: 19 de Abril 1445
+        password:
+          type: integer
+          example: 12345
+          
+    usuarios3:
+      type: object
+      properties:
+        user:
+          type: string
+          example: juanfranco
+        password:
+          type: integer
+          example: 12345      
+          
+    productos:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Hamburguesa
+        prize:
+          type: integer
+          example: 50
+    
+    productos2:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Hamburguesa
+        prize:
+          type: integer
+          example: 50    
+
+    ordenes:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+          example: 1
+        time:
+          type: string
+          format: date-time
+          example: 10
+        status:
+          type: string
+          enum: 
+          - nuevo
+          - confirmado
+          - preparando
+          - enviando
+          - entregado
+          
+    ordenes2:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        time:
+          type: string
+          format: date-time
+          example: 10
+        status:
+          type: string
+          enum: 
+          - nuevo
+          - confirmado
+          - preparando
+          - enviando
+          - entregado      
+          
+          
+  securitySchemes:
+    autenticacion:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT      
+    
