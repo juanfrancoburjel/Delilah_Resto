@@ -227,7 +227,26 @@ paths:
                   "$ref": "#/components/schemas/ordenes"
         404:
           description: No esta autorizado.    
-          
+    
+    delete: 
+      tags: 
+        - Ordenes
+      summary: Elimine una orden
+      parameters: 
+        - name: idOrdenes
+          in: path 
+          description: Id de la orden a eliminar
+          required: True
+          schema:
+            type: integer
+      security: 
+        - autenticacion: []
+      responses:
+        200:
+          description: se elimino la orden.
+        404:
+          description: No esta autorizado.
+    
 components:
   schemas:
     usuarios:
