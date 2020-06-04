@@ -59,12 +59,15 @@ router.delete("/:id", autorizarUsuario, async (req,res)=>{
     .then(resp=>{
         return resp[0]
     })
+    console.log(req.user.id)
+    console.log(userid.users_id)
     if (req.user.id == userid.users_id){
         await sequelize.query(`DELETE FROM orders WHERE id = ${id}`)
             .then(response=>{
                 res.send("se elimino la orden")
         })
     }
+    else {res.send("no tiene permiso")}
 });
 
 
