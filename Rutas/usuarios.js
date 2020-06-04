@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
         }
     });
     res.send ("Usuario o Contrasena incorrecta");
-});
+}); 
 
 // 0.2) Autorizacion
 

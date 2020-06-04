@@ -26,12 +26,11 @@ const autorizarUsuario = (req, res, next) => {
 
 // 2) get /products --> Obtener listado de todos los productos (usuario) //OK
 
-router.get("/", (req,res)=>{
+router.get("/",autorizarUsuario, (req,res)=>{
 
     sequelize.query('SELECT * FROM products',
     {type: sequelize.QueryTypes.SELECT})
     .then(resp=>{
-        console.log (resp);
         res.json (resp)
     })
 

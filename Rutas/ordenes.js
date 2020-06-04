@@ -26,7 +26,7 @@ const autorizarUsuario = (req, res, next) => {
 
 // 3) post/orders --> Crear una nueva orden (usuario) //OK
 
-router.post("/", async (req,res)=>{
+router.post("/",autorizarUsuario, async (req,res)=>{
     await sequelize.query("INSERT INTO orders VALUES (?, ?, ?, ?)",
         {replacements: [null, req.body.users_id, req.body.time, req.body.status]})
         .then(response=>{
@@ -49,5 +49,25 @@ router.put("/:id",autorizarUsuario, async (req,res)=>{
         res.send ("No esta autorizado");
     }
 });
+
+// 5) delete/orders --> Eliminar una orden //OK
+
+router.delete("/:id", autorizarUsuario, async (req,res)=>{
+    const id = req.params.id;
+    const userid = await sequelize.query(`SELECT * FROM orders WHERE id = ${id} `,
+    {type: sequelize.QueryTypes.SELECT})
+    .then(resp=>{
+        return resp[0]
+    })
+    if (req.user.id == userid.users_id){
+        await sequelize.query(`DELETE FROM orders WHERE id = ${id}`)
+            .then(response=>{
+                res.send("se elimino la orden")
+        })
+    }
+});
+
+
+
 
 module.exports = router;
